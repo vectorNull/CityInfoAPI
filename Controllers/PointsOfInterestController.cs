@@ -13,7 +13,7 @@ namespace CityInfoAPI.Controllers
         private readonly IMailService _mailService;
         private readonly CitiesDataStore _citiesDataStore;
 
-        public PointsOfInterestController(ILogger<PointsOfInterestController> logger, 
+        public PointsOfInterestController(ILogger<PointsOfInterestController> logger,
             IMailService mailService,
             CitiesDataStore citiesDataStore)
         {
@@ -42,7 +42,6 @@ namespace CityInfoAPI.Controllers
                 _logger.LogCritical($"Exception while getting points of interest for city with id {cityId}", ex);
                 return StatusCode(500, "A problem happened while handling your request");
             }
-
         }
 
         [HttpGet("{pointOfInterestId}", Name = "GetPointOfInterest")]
@@ -67,7 +66,7 @@ namespace CityInfoAPI.Controllers
 
         [HttpPost]
         public ActionResult<PointOfInterestDto> CreatePointOfInterest(
-            [FromRoute] int cityId, 
+            [FromRoute] int cityId,
             [FromBody] PointOfInterestForCreationDto pointOfInterest)
         {
             var city = _citiesDataStore.Cities.FirstOrDefault(c => c.Id == cityId);
@@ -98,7 +97,7 @@ namespace CityInfoAPI.Controllers
 
         [HttpPut("{pointOfInterestId}")]
         public ActionResult UpdatePointOfInterest(
-            int cityId, 
+            int cityId,
             int pointOfInterestId, 
             PointOfInterestForUpdateDto pointOfInterest)
         {

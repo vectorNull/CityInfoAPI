@@ -457,3 +457,13 @@ $RECYCLE.BIN/
 ## Log files
 ##
 logs
+
+##
+## Migration files
+##
+migrations
+
+##
+## Database files
+##
+*.db

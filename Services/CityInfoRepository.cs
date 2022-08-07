@@ -19,13 +19,8 @@ namespace CityInfoAPI.Services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<City>> GetCitiesAsync(string? name, string? searchQuery)
+        public async Task<(IEnumerable<City>, PaginationMetadata)> GetCitiesAsync(string? name, string? searchQuery, int pageNumber, int pageSize)
         {
-            if (string.IsNullOrEmpty(name) && string.IsNullOrWhiteSpace(searchQuery))
-            {
-                return await GetCitiesAsync();
-            }
-
             // collection to start from; has to do with defered execution
             var collection = _context.Cities as IQueryable<City>;
 
@@ -42,7 +37,17 @@ namespace CityInfoAPI.Services
                     || (a.Description != null && a.Description.Contains(searchQuery)));
             }
 
-            return await collection.OrderBy(c => c.Name).ToListAsync();
+            var totalItemCount = await collection.CountAsync();
+
+            var paginationMetadata = new PaginationMetadata(
+                totalItemCount, pageSize, pageNumber);
+
+            var collectionToReturn = await collection.OrderBy(c => c.Name)
+                .Skip(pageSize * (pageNumber - 1))
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (collectionToReturn, paginationMetadata);
         }
 
         public async Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest)
@@ -71,7 +76,7 @@ namespace CityInfoAPI.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<PointOfInterest>> GetPointsOfInterestsForCityAsync(int cityId)
+        public async Task<IEnumerable<PointOfInterest?>> GetPointsOfInterestForCityAsync(int cityId)
         {
             return await _context.PointsOfInterest
                 .Where(p => p.CityId == cityId)
@@ -89,7 +94,7 @@ namespace CityInfoAPI.Services
 
         public async Task<bool> SaveChangesAsync()
         {
-            return (await _context.SaveChangesAsync() >= 0);
+            return await _context.SaveChangesAsync() >= 0;
         }
 
         public void DeletePointOfInterest(PointOfInterest pointOfInterest)

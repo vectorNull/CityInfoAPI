@@ -467,3 +467,5 @@ migrations
 ## Database files
 ##
 *.db
+CityInfo.db-shm
+CityInfo.db-wal

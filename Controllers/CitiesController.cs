@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace CityInfoAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class CitiesController : ControllerBase
     {
         private readonly ICityInfoRepository _cityInfoRepository;
@@ -42,6 +44,12 @@ namespace CityInfoAPI.Controllers
             return Ok(_mapper.Map<IEnumerable<CityWithoutPointsOfInterestDto>>(cityEntities));
         }
 
+        /// <summary>
+        /// Get a city by Id
+        /// </summary>
+        /// <param name="id">The Id of the city to get</param>
+        /// <param name="includePointsOfInterest">Whether or not to include points of interest</param>
+        /// <return>An IActionResult</return>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCity(int id, bool includePointsOfInterest = false)
         {

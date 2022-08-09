@@ -27,7 +27,15 @@ builder.Services.AddControllers(options => options.ReturnHttpNotAcceptable = tru
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(setupAction => 
+{
+    setupAction.AddSecurityDefinition("CityInfoApiBearerAuth", new Microsoft.OpenApi.Models.OpenApiSecurityScheme()
+    {
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        Description = "Input a valid token to access this API"
+    });
+});
 
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
@@ -50,6 +58,13 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(options => {
             Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretForKey"])
         )
     };
+});
+
+builder.Services.AddApiVersioning(setupAction => 
+{
+    setupAction.AssumeDefaultVersionWhenUnspecified = true;
+    setupAction.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    setupAction.ReportApiVersions = true;
 });
 
 #if DEBUG

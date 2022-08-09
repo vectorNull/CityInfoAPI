@@ -3,6 +3,9 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="microsoft.entityframeworkcore" Version="6.0.0"/>
@@ -18,5 +21,6 @@
 		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.22.0"/>
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.0"/>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7"/>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0"/>
 	</ItemGroup>
 </Project>

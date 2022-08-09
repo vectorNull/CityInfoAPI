@@ -8,9 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CityInfoAPI.Controllers
 {
-    [Route("api/cities/{cityId}/[controller]")]
+    [Route("api/v{version:apiVersion}/cities/{cityId}/[controller]")]
     [ApiController]
     [Authorize]
+    [ApiVersion("2.0")]
 
     public class PointsOfInterestController : ControllerBase
     {
